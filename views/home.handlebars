@@ -116,6 +116,9 @@ document.onkeyup = function (e) {
   go();
 }
  var socket = io();
+ socket.on('code', function(code) {
+  cd.innerHTML = code;
+ });
  socket.on('users', function(users) {
   if (users > maxu) {
     maxu = users;
@@ -125,6 +128,9 @@ document.onkeyup = function (e) {
   let code1 = editor.getValue();
   socket.emit('code1', code1);
  }
+ socket.on('code2', function(code2) {
+  cd.innerHTML = code2;
+ });
 </script>
 <!--<script src='pass.js'></script>-->
 <style>body, html {overflow: hidden;background: #272822;font-size: 15px;font-weight: 500;}</style>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Окно</title>
+  <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro:200' rel='stylesheet' type='text/css'>
+</head>
+<body>
+  <div class="window">
+    <div class="menu">
+      <div class="red">&nbsp;</div>
+      <div class="yellow">&nbsp;</div>
+      <div class="green">&nbsp;</div>
+    </div>
+    <div class="term">
+      <div contenteditable="true" class="edit">
+        >>> node app.js<br>
+        listening on: 5000<br>
+        &nbsp;new user<br>
+        &nbsp;new user<br>
+        &nbsp;user disconnected<br>
+        &nbsp;Ctrl^C<br>
+        >>><br>
+      </div>
+    </div>
+  </div>
+  <style>
+    .window {
+      width: 80%;
+      padding: 0;
+      margin: 0 auto;
+    }
+    .term {
+      min-height: 300px;
+      max-height: 300px;
+      font-family: 'Source Code Pro', monospace;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.767);
+      padding: 15px;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+    .menu {
+      background: linear-gradient(0deg, #d8d8d8, #ececec);
+      padding-top: 5px;
+      padding-left: 5px;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+    }
+    .edit {
+      width: 100%;
+      border: none;
+    }
+    .red, .yellow, .green {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      background-color: black;
+      margin: 0 3px;
+      display: inline-block;
+      cursor: pointer;
+    }
+    .red {background-color: #ff6159;}
+    .yellow {background-color: #ffbf2f;}
+    .green {background-color: #25cc3e;}
+  </style>
+</body>
+</html>

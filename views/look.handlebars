@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>LOOK</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="favicon.ico">
+  <meta property="og:image" content="ico.png">
+  <script src="dist/lib/codemirror.js"></script>
+  <script src="dist/mode/javascript/javascript.js"></script>
+  <script src="dist/addon/hint/javascript-hint.js"></script>
+  <script src="dist/addon/dialog/dialog.js"></script>
+  <script src="dist/addon/search/searchcursor.js"></script>
+  <script src="dist/addon/search/search.js"></script>
+  <script src="dist/addon/hint/show-hint.js"></script>
+  <script src="dist/addon/fold/foldcode.js"></script>
+  <script src="dist/addon/fold/comment-fold.js"></script>
+  <script src="dist/addon/fold/brace-fold.js"></script>
+  <script src="dist/addon/fold/foldgutter.js"></script>
+  <script src="dist/addon/edit/closetag.js"></script>
+  <script src="dist/mode/xml/xml.js"></script>
+  <script src="dist/mode/css/css.js"></script>
+  <script src="dist/mode/htmlmixed/htmlmixed.js"></script>
+  <script src="dist/code-blast.js"></script>
+  <link rel="stylesheet" href="dist/lib/codemirror.css">
+  <link rel="stylesheet" href="dist/theme/monokai.css">
+  <link rel="stylesheet" href="dist/addon/hint/show-hint.css">
+  <link rel="stylesheet" href="dist/addon/dialog/dialog.css">
+  <link rel="stylesheet" href="dist/addon/fold/foldgutter.css">
+</head>
+<script src="/socket.io/socket.io.js"></script>
+<body>
+  <div class="slider">
+    <div class="slider__wrapper">
+      <div class="slider__item">
+        <textarea id="cd" style="width: 600px;height: 200px;" readonly>//hello =)</textarea>
+        <iframe src="/look/{{{name}}}"></iframe>
+      </div>
+      <div class="slider__item">
+        <textarea id="cd1" style="width: 600px;height: 200px;" readonly>//hello =)</textarea>
+      </div>
+    </div>
+    <a class="slider__control slider__control_left" href="#" role="button"></a>
+    <a class="slider__control slider__control_right slider__control_show" href="#" role="button"></a>
+  </div>
+  <img src="temp/1.png" width="100%" id="temp" style="
+    z-index: 9999;
+    position: fixed;
+    right: 5px;
+    bottom: 5px;
+    width: 143px;
+    height: 73px;
+    color: white;
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .3s;
+  ">
+</body>
+<script>
+var a = 0;
+temp.onclick = function () {
+  if (a == 0) {
+    temp.style.width = '643px';
+    temp.style.height = '373px';
+    a = 1;
+  } else {
+    temp.style.width = '143px';
+    temp.style.height = '73px';
+    a = 0;
+  }
+}
+var editor = CodeMirror.fromTextArea(document.getElementById('cd'), {
+  mode: 'htmlmixed',
+  lineNumbers: true,
+  autoCloseTags: true,
+  theme: 'monokai',
+  foldGutter: true,
+  matchBrackets: true,
+	lineWrapping: true,
+	autofocus: true,
+  gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+  extraKeys: {
+    "Ctrl-Space": "autocomplete",
+    "Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
+  blastCode: { effect: 2 }
+});
+ var socket = io();
+ socket.on('code', function(code) {
+  cd.innerHTML = code;
+  document.querySelector('.cm-s-monokai').remove();
+  cd.innerHTML = code;
+  add();
+ });
+var he = document.documentElement.clientHeight;
+var styl = document.createElement('style');
+styl.innerHTML = '.cm-s-monokai{height: ' + he/2 + 'px;}.slider{height:' + he + 'px;}';
+document.body.appendChild(styl);
+function add () {
+  editor = CodeMirror.fromTextArea(document.getElementById('cd'), {
+  mode: 'htmlmixed',
+  lineNumbers: true,
+  autoCloseTags: true,
+  theme: 'monokai',
+  foldGutter: true,
+  matchBrackets: true,
+	lineWrapping: true,
+	autofocus: true,
+  gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+  extraKeys: {
+    "Ctrl-Space": "autocomplete",
+    "Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
+  blastCode: { effect: 2 }
+});
+}
+ socket.on('code2', function(code2) {
+  cd.innerHTML = code2;
+  document.querySelector('.cm-s-monokai').remove();
+  cd.innerHTML = code2;
+  add();
+ });
+ var multiItemSlider = (function () {
+  return function (selector, config) {
+    var
+      _mainElement = document.querySelector(selector), // основный элемент блока
+      _sliderWrapper = _mainElement.querySelector('.slider__wrapper'), // обертка для .slider-item
+      _sliderItems = _mainElement.querySelectorAll('.slider__item'), // элементы (.slider-item)
+      _sliderControls = _mainElement.querySelectorAll('.slider__control'), // элементы управления
+      _sliderControlLeft = _mainElement.querySelector('.slider__control_left'), // кнопка "LEFT"
+      _sliderControlRight = _mainElement.querySelector('.slider__control_right'), // кнопка "RIGHT"
+      _wrapperWidth = parseFloat(getComputedStyle(_sliderWrapper).width), // ширина обёртки
+      _itemWidth = parseFloat(getComputedStyle(_sliderItems[0]).width), // ширина одного элемента
+      _positionLeftItem = 0, // позиция левого активного элемента
+      _transform = 0, // значение транфсофрмации .slider_wrapper
+      _step = _itemWidth / _wrapperWidth * 100, // величина шага (для трансформации)
+      _items = []; // массив элементов
+    // наполнение массива _items
+    _sliderItems.forEach(function (item, index) {
+      _items.push({ item: item, position: index, transform: 0 });
+    });
+    var position = {
+      getMin: 0,
+      getMax: _items.length - 1,
+    }
+    var _transformItem = function (direction) {
+      if (direction === 'right') {
+        if ((_positionLeftItem + _wrapperWidth / _itemWidth - 1) >= position.getMax) {
+          return;
+        }
+        if (!_sliderControlLeft.classList.contains('slider__control_show')) {
+          _sliderControlLeft.classList.add('slider__control_show');
+        }
+        if (_sliderControlRight.classList.contains('slider__control_show') && (_positionLeftItem + _wrapperWidth / _itemWidth) >= position.getMax) {
+          _sliderControlRight.classList.remove('slider__control_show');
+        }
+        _positionLeftItem++;
+        _transform -= _step;
+      }
+      if (direction === 'left') {
+        if (_positionLeftItem <= position.getMin) {
+          return;
+        }
+        if (!_sliderControlRight.classList.contains('slider__control_show')) {
+          _sliderControlRight.classList.add('slider__control_show');
+        }
+        if (_sliderControlLeft.classList.contains('slider__control_show') && _positionLeftItem - 1 <= position.getMin) {
+          _sliderControlLeft.classList.remove('slider__control_show');
+        }
+        _positionLeftItem--;
+        _transform += _step;
+      }
+      _sliderWrapper.style.transform = 'translateX(' + _transform + '%)';
+    }
+    // обработчик события click для кнопок "назад" и "вперед"
+    var _controlClick = function (e) {
+      if (e.target.classList.contains('slider__control')) {
+        e.preventDefault();
+        var direction = e.target.classList.contains('slider__control_right') ? 'right' : 'left';
+        _transformItem(direction);
+      }
+    };
+    var _setUpListeners = function () {
+      // добавление к кнопкам "назад" и "вперед" обрботчика _controlClick для событя click
+      _sliderControls.forEach(function (item) {
+        item.addEventListener('click', _controlClick);
+      });
+    }
+    // инициализация
+    _setUpListeners();
+    return {
+      right: function () { // метод right
+        _transformItem('right');
+      },
+      left: function () { // метод left
+        _transformItem('left');
+      }
+    }
+  }
+}());
+
+    var slider = multiItemSlider('.slider')
+</script>
+<style>
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    color: #fff;
+    height: 3000px;
+  }
+
+  .slider {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slider__wrapper {
+    display: flex;
+    transition: transform 0.6s ease;
+  }
+
+  .slider__item {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  .slider__control {
+    position: absolute;
+    top: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    color: #fff;
+    text-align: center;
+    opacity: 0.5;
+    height: 50px;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, .5);
+  }
+
+  .slider__control_show {
+    display: flex;
+  }
+
+  .slider__control:hover,
+  .slider__control:focus {
+    color: #fff;
+    text-decoration: none;
+    outline: 0;
+    opacity: .9;
+  }
+
+  .slider__control_left {
+    left: 0;
+  }
+
+  .slider__control_right {
+    right: 0;
+  }
+
+  .slider__control::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: transparent no-repeat center center;
+    background-size: 100% 100%;
+  }
+
+  .slider__control_left::before {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E");
+  }
+
+  .slider__control_right::before {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E");
+  }
+</style>
+<style>body, html {overflow: hidden;background: #272822;font-size: 15px;font-weight: 500;}</style>
+</html>

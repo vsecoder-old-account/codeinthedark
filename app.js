@@ -21,7 +21,9 @@ app.use(express.static(__dirname + '/public'));
 app.all('*', function(req, res, next) {
 	var ip = (req.headers['x-forwarded-for'] || '').split(',')[0] || req.connection.remoteAddress;
 	var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
-	console.log("IP: " + ip + " URL: "  + fullUrl);
+  console.log("IP: " + ip + " URL: "  + fullUrl);
+  res.setHeader('Content-Type', 'text/html');
+  req.setMaxListeners(0);
 	next();
 });
 
@@ -30,12 +32,19 @@ app.get('/', function(req, res){
 });
 
 app.get('/:name', function(req, res){
-  res.render('home');
   name = req.params.name;
+  res.render('home', { name: name });
   fs.readFile('users/' + name + '.html', 'utf8', (err, data) => {
     if(err) {res.json('вы не приглашенны');}
     else {
-      res.render('home');
+      res.render('home', { name: name });
+      io.on('connection', client => {
+        client.on('code' + name + 't', function(code) {
+          fs.writeFile('users/' + name + '.html', code, (err) => {
+            if(err) throw err;
+          });
+        });
+      });
     }
   });
 });
@@ -45,7 +54,7 @@ app.get('/look/:name', function(req, res){
   fs.readFile('users/' + name + '.html', 'utf8', (err, data) => {
     if(err) {res.json('no search file =(');}
     else {
-      res.render('frame', { code: data });
+      res.render('frame', { code: data, name: name });
     }
   });
 });
@@ -55,12 +64,6 @@ io.on('connection', client => {
   io.sockets.emit('users', users);
   let code = '<!--start coding-->';
   io.sockets.emit('code', code);
-  client.on('code1', function(code1) {
-    io.sockets.emit('code2', code1);
-    fs.writeFile('users/' + name + '.html', code1, (err) => {
-      if(err) throw err;
-    });
-  });
   client.on('disconnect', () => {
     users--;
     io.sockets.emit('users', users);

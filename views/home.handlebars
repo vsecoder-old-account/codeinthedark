@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>WRITE</title>
+  <title>{{{name}}}</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="favicon.ico">
@@ -37,6 +37,7 @@
   <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro:200' rel='stylesheet' type='text/css'>
 </head>
 <body>
+  &lt;!--Пиши код {{{name}}}-->
   <style>
     /* colors
       {background: linear-gradient(0deg, #d8d8d8, #ececec);} * menu gradient
@@ -125,12 +126,9 @@ document.onkeyup = function (e) {
   }
  });
  function go () {
-  let code1 = editor.getValue();
-  socket.emit('code1', code1);
+  let code = editor.getValue();
+  socket.emit('code{{{name}}}t', code);
  }
- socket.on('code2', function(code2) {
-  cd.innerHTML = code2;
- });
 </script>
 <!--<script src='pass.js'></script>-->
 <style>body, html {overflow: hidden;background: #272822;font-size: 15px;font-weight: 500;}</style>

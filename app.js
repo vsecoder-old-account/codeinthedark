@@ -28,7 +28,7 @@ app.all('*', function(req, res, next) {
 });
 
 app.get('/', function(req, res){
-  res.render('lok');
+  res.render('look');
 });
 
 app.get('/:name', function(req, res){

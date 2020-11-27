@@ -33,11 +33,44 @@
   <div class="slider">
     <div class="slider__wrapper">
       <div class="slider__item">
-        <textarea id="cd" style="width: 600px;height: 200px;" readonly>//hello =)</textarea>
-        <iframe src="/look/{{{name}}}"></iframe>
+        <p>1</p>
+        <iframe src="/look/1" id="p1"></iframe>
       </div>
       <div class="slider__item">
-        <textarea id="cd1" style="width: 600px;height: 200px;" readonly>//hello =)</textarea>
+        <p>2</p>
+        <iframe src="/look/2" id="p2"></iframe>
+      </div>
+      <div class="slider__item">
+        <p>3</p>
+        <iframe src="/look/3" id="p3"></iframe>
+      </div>
+      <div class="slider__item">
+        <p>4</p>
+        <iframe src="/look/4" id="p4"></iframe>
+      </div>
+      <div class="slider__item">
+        <p>5</p>
+        <iframe src="/look/5" id="p5"></iframe>
+      </div>
+      <div class="slider__item">
+        <p>6</p>
+        <iframe src="/look/6" id="p6"></iframe>
+      </div>
+      <div class="slider__item">
+        <p>7</p>
+        <iframe src="/look/7" id="p7"></iframe>
+      </div>
+      <div class="slider__item">
+        <p>8</p>
+        <iframe src="/look/8" id="p8"></iframe>
+      </div>
+      <div class="slider__item">
+        <p>9</p>
+        <iframe src="/look/9" id="p9"></iframe>
+      </div>
+      <div class="slider__item">
+        <p>10</p>
+        <iframe src="/look/10" id="p10"></iframe>
       </div>
     </div>
     <a class="slider__control slider__control_left" href="#" role="button"></a>
@@ -71,55 +104,81 @@ temp.onclick = function () {
     a = 0;
   }
 }
-var editor = CodeMirror.fromTextArea(document.getElementById('cd'), {
-  mode: 'htmlmixed',
-  lineNumbers: true,
-  autoCloseTags: true,
-  theme: 'monokai',
-  foldGutter: true,
-  matchBrackets: true,
-	lineWrapping: true,
-	autofocus: true,
-  gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-  extraKeys: {
-    "Ctrl-Space": "autocomplete",
-    "Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
-  blastCode: { effect: 2 }
-});
+//var editor = CodeMirror.fromTextArea(document.getElementById('cd'), {
+//  mode: 'htmlmixed',
+//  lineNumbers: true,
+//  autoCloseTags: true,
+//  theme: 'monokai',
+//  foldGutter: true,
+//  matchBrackets: true,
+//	lineWrapping: true,
+//	autofocus: true,
+//  gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+//  extraKeys: {
+//    "Ctrl-Space": "autocomplete",
+//    "Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
+//  blastCode: { effect: 2 }
+//});
  var socket = io();
- socket.on('code', function(code) {
-  cd.innerHTML = code;
-  document.querySelector('.cm-s-monokai').remove();
-  cd.innerHTML = code;
-  add();
- });
-var he = document.documentElement.clientHeight;
+// socket.on('code', function(code) {
+//  cd.innerHTML = code;
+//  document.querySelector('.cm-s-monokai').remove();
+//  cd.innerHTML = code;
+//  add();
+// });
+var we = document.documentElement.clientWidth / 2 - 10;
+var he = document.documentElement.clientHeight / 2 - 15;
 var styl = document.createElement('style');
-styl.innerHTML = '.cm-s-monokai{height: ' + he/2 + 'px;}.slider{height:' + he + 'px;}';
+var socket = io();
+styl.innerHTML = 'iframe{width: ' + we + 'px; height: ' + he + 'px;}';
 document.body.appendChild(styl);
 function add () {
-  editor = CodeMirror.fromTextArea(document.getElementById('cd'), {
-  mode: 'htmlmixed',
-  lineNumbers: true,
-  autoCloseTags: true,
-  theme: 'monokai',
-  foldGutter: true,
-  matchBrackets: true,
-	lineWrapping: true,
-	autofocus: true,
-  gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-  extraKeys: {
-    "Ctrl-Space": "autocomplete",
-    "Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
-  blastCode: { effect: 2 }
-});
+  //editor = CodeMirror.fromTextArea(document.getElementById('cd'), {
+  //mode: 'htmlmixed',
+  //lineNumbers: true,
+  //autoCloseTags: true,
+  //theme: 'monokai',
+  //foldGutter: true,
+  //matchBrackets: true,
+	//lineWrapping: true,
+	//autofocus: true,
+  //gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+  //extraKeys: {
+  //  "Ctrl-Space": "autocomplete",
+  //  "Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
+  //blastCode: { effect: 2 }
+  //});
 }
- socket.on('code2', function(code2) {
-  cd.innerHTML = code2;
-  document.querySelector('.cm-s-monokai').remove();
-  cd.innerHTML = code2;
-  add();
- });
+socket.on('code1t', function(code) {
+ p1.src = '/look/1';
+});
+socket.on('code2t', function(code) {
+ p2.src = '/look/2';
+});
+socket.on('code3t', function(code) {
+ p3.src = '/look/3';
+});
+socket.on('code4t', function(code) {
+ p4.src = '/look/4';
+});
+socket.on('code5t', function(code) {
+ p5.src = '/look/5';
+});
+socket.on('code6t', function(code) {
+ p6.src = '/look/6';
+});
+socket.on('code7t', function(code) {
+ p7.src = '/look/7';
+});
+socket.on('code8t', function(code) {
+ p8.src = '/look/8';
+});
+socket.on('code9t', function(code) {
+ p9.src = '/look/9';
+});
+socket.on('code10t', function(code) {
+ p10.src = '/look/10';
+});
  var multiItemSlider = (function () {
   return function (selector, config) {
     var
@@ -274,6 +333,12 @@ function add () {
 
   .slider__control_right::before {
     background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E");
+  }
+  p {
+    text-align: center;
+  }
+  iframe {
+    background: white;
   }
 </style>
 <style>body, html {overflow: hidden;background: #272822;font-size: 15px;font-weight: 500;}</style>

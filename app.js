@@ -1,12 +1,11 @@
 var express = require('express');
 var app = require('express')();
 var http = require('http').Server(app);
-//порт для heroku нужен 5000
 var io = require('socket.io')(http);
 var users = 0,
     codeget = '',
-    name = '',
-    port = 5000;
+    name = '';
+var port = 5000;
 const folder = './users/';
 var fs = require('fs');
 var handlebars = require('express-handlebars')
@@ -20,8 +19,8 @@ app.all('*', function(req, res, next) {
 	var ip = (req.headers['x-forwarded-for'] || '').split(',')[0] || req.connection.remoteAddress;
 	var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
   console.log("IP: " + ip + " URL: "  + fullUrl);
-  res.setHeader('Content-Type', 'text/html');
-  req.setMaxListeners(0);
+  //res.setHeader('Content-Type', 'text/html');
+  //req.setMaxListeners(0);
 	next();
 });
 

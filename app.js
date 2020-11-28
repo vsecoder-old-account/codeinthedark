@@ -25,7 +25,6 @@ app.all('*', function(req, res, next) {
 });
 
 app.get('/', function(req, res){
-  express.static(__dirname + '/public');
   res.render('index');
 });
 

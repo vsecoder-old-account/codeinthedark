@@ -1,16 +1,12 @@
 var express = require('express');
 var app = require('express')();
-//var http = require('http').Server(app);
+var http = require('http').Server(app);
 //порт для heroku нужен 5000
-var port = 5000;
-const server = app.listen(port, function(){
-  console.log( 'Express server started on http://localhost:' +
-    port + '; press Ctrl-C to stop.' );
-});
-var io = require('socket.io')(server);
+var io = require('socket.io')(http);
 var users = 0,
     codeget = '',
-    name = '';
+    name = '',
+    port = 5000;
 const folder = './users/';
 var fs = require('fs');
 var handlebars = require('express-handlebars')
@@ -113,4 +109,8 @@ app.use(function(err, req, res, next){
   console.error(err.stack);
   res.status(500);
   res.render('500');
+});
+
+http.listen(port, function(){
+  console.log('listening on: ' + port);
 });

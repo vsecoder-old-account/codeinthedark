@@ -35,42 +35,52 @@
       <div class="slider__item">
         <p>1</p>
         <iframe src="/look/1" id="p1"></iframe>
+        <textarea id="t1"></textarea>
       </div>
       <div class="slider__item">
         <p>2</p>
         <iframe src="/look/2" id="p2"></iframe>
+        <textarea id="t2"></textarea>
       </div>
       <div class="slider__item">
         <p>3</p>
         <iframe src="/look/3" id="p3"></iframe>
+        <textarea id="t3"></textarea>
       </div>
       <div class="slider__item">
         <p>4</p>
         <iframe src="/look/4" id="p4"></iframe>
+        <textarea id="t4"></textarea>
       </div>
       <div class="slider__item">
         <p>5</p>
         <iframe src="/look/5" id="p5"></iframe>
+        <textarea id="t5"></textarea>
       </div>
       <div class="slider__item">
         <p>6</p>
         <iframe src="/look/6" id="p6"></iframe>
+        <textarea id="t6"></textarea>
       </div>
       <div class="slider__item">
         <p>7</p>
         <iframe src="/look/7" id="p7"></iframe>
+        <textarea id="t7"></textarea>
       </div>
       <div class="slider__item">
         <p>8</p>
         <iframe src="/look/8" id="p8"></iframe>
+        <textarea id="t8"></textarea>
       </div>
       <div class="slider__item">
         <p>9</p>
         <iframe src="/look/9" id="p9"></iframe>
+        <textarea id="t9"></textarea>
       </div>
       <div class="slider__item">
         <p>10</p>
         <iframe src="/look/10" id="p10"></iframe>
+        <textarea id="t10"></textarea>
       </div>
     </div>
     <a class="slider__control slider__control_left" href="#" role="button"></a>
@@ -104,97 +114,78 @@ temp.onclick = function () {
     a = 0;
   }
 }
-//var editor = CodeMirror.fromTextArea(document.getElementById('cd'), {
-//  mode: 'htmlmixed',
-//  lineNumbers: true,
-//  autoCloseTags: true,
-//  theme: 'monokai',
-//  foldGutter: true,
-//  matchBrackets: true,
-//	lineWrapping: true,
-//	autofocus: true,
-//  gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-//  extraKeys: {
-//    "Ctrl-Space": "autocomplete",
-//    "Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
-//  blastCode: { effect: 2 }
-//});
- var socket = io();
-// socket.on('code', function(code) {
-//  cd.innerHTML = code;
-//  document.querySelector('.cm-s-monokai').remove();
-//  cd.innerHTML = code;
-//  add();
-// });
-var we = document.documentElement.clientWidth / 2 - 10;
-var he = document.documentElement.clientHeight / 2 - 15;
-var styl = document.createElement('style');
 var socket = io();
-styl.innerHTML = 'iframe{width: ' + we + 'px; height: ' + he + 'px;}';
+var we = document.documentElement.clientWidth / 2 - 10;
+var he = document.documentElement.clientHeight - 25;
+var he1 = document.documentElement.clientHeight - 15;
+var styl = document.createElement('style');
+styl.innerHTML = 'iframe, .cm-s-monokai{width: ' + we + 'px; height: ' + he + 'px;position: absolute;}.slider{height: ' + he1 + 'px;}';
 document.body.appendChild(styl);
-function add () {
-  //editor = CodeMirror.fromTextArea(document.getElementById('cd'), {
-  //mode: 'htmlmixed',
-  //lineNumbers: true,
-  //autoCloseTags: true,
-  //theme: 'monokai',
-  //foldGutter: true,
-  //matchBrackets: true,
-	//lineWrapping: true,
-	//autofocus: true,
-  //gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-  //extraKeys: {
-  //  "Ctrl-Space": "autocomplete",
-  //  "Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
-  //blastCode: { effect: 2 }
-  //});
+function add1 (nmb) {
+var editor = CodeMirror.fromTextArea(document.getElementById('t' + nmb), {
+  mode: 'htmlmixed',
+  lineNumbers: true,
+  autoCloseTags: true,
+  theme: 'monokai',
+  foldGutter: true,
+  matchBrackets: true,
+	lineWrapping: true,
+	autofocus: true,
+  gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+  extraKeys: {
+    "Ctrl-Space": "autocomplete",
+    "Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
+  blastCode: { effect: 2 }
+});
 }
-socket.on('code1t', function(code) {
- p1.src = '/look/1';
+add1(1);add1(2);add1(3);add1(4);add1(5);
+add1(6);add1(7);add1(8);add1(9);add1(10);
+function add (nmb) {
+  editor = CodeMirror.fromTextArea(document.getElementById('t' + nmb), {
+  mode: 'htmlmixed',
+  lineNumbers: true,
+  autoCloseTags: true,
+  theme: 'monokai',
+  foldGutter: true,
+  matchBrackets: true,
+	lineWrapping: true,
+	autofocus: true,
+  gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+  extraKeys: {
+    "Ctrl-Space": "autocomplete",
+    "Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
+  blastCode: { effect: 2 }
+  });
+}
+var socket = io();
+socket.on('coder', function(code, nmb) {
+  document.getElementById('p' + nmb).src = '/look/' + nmb;
+  document.getElementById('t' + nmb).value = code;
+  add(nmb);
 });
-socket.on('code2t', function(code) {
- p2.src = '/look/2';
-});
-socket.on('code3t', function(code) {
- p3.src = '/look/3';
-});
-socket.on('code4t', function(code) {
- p4.src = '/look/4';
-});
-socket.on('code5t', function(code) {
- p5.src = '/look/5';
-});
-socket.on('code6t', function(code) {
- p6.src = '/look/6';
-});
-socket.on('code7t', function(code) {
- p7.src = '/look/7';
-});
-socket.on('code8t', function(code) {
- p8.src = '/look/8';
-});
-socket.on('code9t', function(code) {
- p9.src = '/look/9';
-});
-socket.on('code10t', function(code) {
- p10.src = '/look/10';
+var users, maxu;
+socket.on('users', function(users) {
+ if (users > maxu) {
+   maxu = users;
+ }
+ console.log(maxu);
 });
  var multiItemSlider = (function () {
   return function (selector, config) {
     var
-      _mainElement = document.querySelector(selector), // основный элемент блока
-      _sliderWrapper = _mainElement.querySelector('.slider__wrapper'), // обертка для .slider-item
-      _sliderItems = _mainElement.querySelectorAll('.slider__item'), // элементы (.slider-item)
-      _sliderControls = _mainElement.querySelectorAll('.slider__control'), // элементы управления
-      _sliderControlLeft = _mainElement.querySelector('.slider__control_left'), // кнопка "LEFT"
-      _sliderControlRight = _mainElement.querySelector('.slider__control_right'), // кнопка "RIGHT"
-      _wrapperWidth = parseFloat(getComputedStyle(_sliderWrapper).width), // ширина обёртки
-      _itemWidth = parseFloat(getComputedStyle(_sliderItems[0]).width), // ширина одного элемента
-      _positionLeftItem = 0, // позиция левого активного элемента
-      _transform = 0, // значение транфсофрмации .slider_wrapper
-      _step = _itemWidth / _wrapperWidth * 100, // величина шага (для трансформации)
-      _items = []; // массив элементов
-    // наполнение массива _items
+      _mainElement = document.querySelector(selector),
+      _sliderWrapper = _mainElement.querySelector('.slider__wrapper'),
+      _sliderItems = _mainElement.querySelectorAll('.slider__item'),
+      _sliderControls = _mainElement.querySelectorAll('.slider__control'),
+      _sliderControlLeft = _mainElement.querySelector('.slider__control_left'),
+      _sliderControlRight = _mainElement.querySelector('.slider__control_right'),
+      _wrapperWidth = parseFloat(getComputedStyle(_sliderWrapper).width),
+      _itemWidth = parseFloat(getComputedStyle(_sliderItems[0]).width),
+      _positionLeftItem = 0,
+      _transform = 0,
+      _step = _itemWidth / _wrapperWidth * 100,
+      _items = [];
+
     _sliderItems.forEach(function (item, index) {
       _items.push({ item: item, position: index, transform: 0 });
     });
@@ -231,7 +222,7 @@ socket.on('code10t', function(code) {
       }
       _sliderWrapper.style.transform = 'translateX(' + _transform + '%)';
     }
-    // обработчик события click для кнопок "назад" и "вперед"
+
     var _controlClick = function (e) {
       if (e.target.classList.contains('slider__control')) {
         e.preventDefault();
@@ -240,18 +231,18 @@ socket.on('code10t', function(code) {
       }
     };
     var _setUpListeners = function () {
-      // добавление к кнопкам "назад" и "вперед" обрботчика _controlClick для событя click
+
       _sliderControls.forEach(function (item) {
         item.addEventListener('click', _controlClick);
       });
     }
-    // инициализация
+
     _setUpListeners();
     return {
-      right: function () { // метод right
+      right: function () {
         _transformItem('right');
       },
-      left: function () { // метод left
+      left: function () {
         _transformItem('left');
       }
     }
@@ -265,7 +256,6 @@ socket.on('code10t', function(code) {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     color: #fff;
-    height: 3000px;
   }
 
   .slider {
@@ -281,6 +271,7 @@ socket.on('code10t', function(code) {
   .slider__item {
     flex: 0 0 100%;
     max-width: 100%;
+    text-align: center;
   }
 
   .slider__control {
@@ -340,6 +331,7 @@ socket.on('code10t', function(code) {
   iframe {
     background: white;
   }
+  .cm-s-monokai {text-align: left;}
 </style>
 <style>body, html {overflow: hidden;background: #272822;font-size: 15px;font-weight: 500;}</style>
 </html>

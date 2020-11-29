@@ -20,7 +20,7 @@ app.all('*', function(req, res, next) {
 	var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
   console.log("IP: " + ip + " URL: "  + fullUrl);
   //res.setHeader('Content-Type', 'text/html');
-  //req.setMaxListeners(0);
+  req.setMaxListeners(0);
 	next();
 });
 

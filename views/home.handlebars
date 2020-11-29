@@ -64,6 +64,20 @@
     cursor: pointer;
     transition: .3s;
   ">
+  <div id="timer" style="
+    z-index: 9999;
+    position: fixed;
+    left: 5px;
+    bottom: 5px;
+    width: 143px;
+    height: 73px;
+    color: white;
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .3s;
+  ">3:00</div>
 </body>
 <script>
 var nametest = window.location.href;
@@ -127,6 +141,28 @@ socket.on('admin1', function(numb) {
     start = false;
   }
   console.log(start);
+  var timeMinut = 3;
+  var timeSecond = 0;
+  time = setInterval(function () {
+      seconds = '' + timeSecond%60;
+      minutes = '' + timeMinut%60;
+      seconds1 = timeSecond;
+      minutes1 = timeMinut;
+      if (seconds == 0 && minutes != 0) {
+        timeMinut--;
+        timeSecond = 59;
+      } else if (timeSecond != 0) {
+        timeSecond--;
+      } else if (seconds1 == 0 && minutes1 == 0) {
+        alert('Конец');
+        window.location = '/';
+      }
+      if (seconds.length == 1) {
+        timer.innerHTML = minutes + ':0' + seconds;
+      } else {
+        timer.innerHTML = minutes + ':' + seconds;
+      }
+  }, 1000);
 });
 if (start == undefined) {
   alert('Ещё не начали!');

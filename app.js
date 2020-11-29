@@ -24,7 +24,7 @@ app.all('*', function(req, res, next) {
 	next();
 });
 
-app.get('/', function(req, res){
+app.get(['/', '/index.html', '/index.js', '/index.php', '/index.py', '//'], function(req, res){
   res.render('index');
 });
 
@@ -36,12 +36,21 @@ app.get('/test', function(req, res){
   res.render('test');
 });
 
+app.get('/admin', function(req, res){
+  io.on('connection', client => {
+    client.on('admin', function(numb) {
+      io.sockets.emit('admin1', numb);
+    });
+  });
+  res.render('admin');
+});
+
 app.get('/:name', function(req, res){
   var name1 = req.params.name;
   console.log(req.params.name);
   res.render('home', { name: name1 });
   fs.readFile('users/' + name1 + '.html', 'utf8', (err, data) => {
-    if(err) {res.json('Вы не приглашенны');}
+    if(err) {res.json('Вы не приглашенны...');}
     else {
       io.on('connection', client => {
         io.sockets.emit('code' + name + 't', name);

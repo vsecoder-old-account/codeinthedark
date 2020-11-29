@@ -116,10 +116,25 @@ function add () {
     blastCode: { effect: 2 }
   });
 }
+var socket = io();
+var start;
+socket.on('admin1', function(numb) {
+  if (numb == 1) {
+    st();
+    start = true;
+  } else {
+    document.write('КОНЕЦ');
+    start = false;
+  }
+  console.log(start);
+});
+if (start == undefined) {
+  alert('Ещё не начали!');
+}
+function st () {
 document.onkeyup = function (e) {
   go();
 }
- var socket = io();
  socket.on('users', function(users) {
   if (users > maxu) {
     maxu = users;
@@ -131,6 +146,7 @@ document.onkeyup = function (e) {
   socket.emit('code' + name + 't', code);
   console.log('#code' + name);
  }
+}
 </script>
 <!--<script src='pass.js'></script>-->
 <style>body, html {overflow: hidden;background: #272822;font-size: 15px;font-weight: 500;}</style>

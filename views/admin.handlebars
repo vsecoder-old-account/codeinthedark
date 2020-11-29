@@ -194,6 +194,28 @@ socket.on('users', function(users) {
 function start () {
   socket.emit('admin', 1);
   console.log(1);
+  var timeMinut = 3;
+  var timeSecond = 0;
+  time = setInterval(function () {
+      seconds = '' + timeSecond%60;
+      minutes = '' + timeMinut%60;
+      seconds1 = timeSecond;
+      minutes1 = timeMinut;
+      if (seconds == 0 && minutes != 0) {
+        timeMinut--;
+        timeSecond = 59;
+      } else if (timeSecond != 0) {
+        timeSecond--;
+      } else if (seconds1 == 0 && minutes1 == 0) {
+        alert('Конец');
+        window.location = '/';
+      }
+      if (seconds.length == 1) {
+        timer.innerHTML = minutes + ':0' + seconds;
+      } else {
+        timer.innerHTML = minutes + ':' + seconds;
+      }
+  }, 1000);
 }
 function stop () {
   socket.emit('admin', 0);

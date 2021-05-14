@@ -20,7 +20,7 @@ app.use(express.static(__dirname + '/public'));
 
 // import bot
 const { Telegraf, Markup } = require('telegraf');
-const bot = new Telegraf('1440357119:AAH6Z-BDOoY-5ZnipC7rONo8c-lGHu4VEwI');
+const bot = new Telegraf('token');
 const inlineMessageRatingKeyboard = Markup.inlineKeyboard([
   Markup.button.callback('💻 Участник', 'user'),
   Markup.button.callback('🖥 Зритель', 'looker')

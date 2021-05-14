@@ -1,19 +1,49 @@
-var express = require('express');
-var app = require('express')();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
-var port = process.env.PORT || 5000;
-var users = 0,
-    codeget = '',
-    name = '';
+// import web
+var express = require('express'),
+  app = require('express')(),
+  http = require('http').Server(app),
+  io = require('socket.io')(http),
+  fs = require('fs'),
+  port = process.env.PORT || 5000;
+  users = 1,
+  codeget = '',
+  name = '';
+
 const folder = './users/';
-var fs = require('fs');
+
 var handlebars = require('express-handlebars')
   .create({ defaultLayout:'main' });
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 app.set('port', process.env.PORT || port);
 app.use(express.static(__dirname + '/public'));
+
+// import bot
+const { Telegraf, Markup } = require('telegraf');
+const bot = new Telegraf('1440357119:AAH6Z-BDOoY-5ZnipC7rONo8c-lGHu4VEwI');
+const inlineMessageRatingKeyboard = Markup.inlineKeyboard([
+  Markup.button.callback('💻 Участник', 'user'),
+  Markup.button.callback('🖥 Зритель', 'looker')
+]);
+var msg = '👨‍✈️ Здравствуй, я бот проекта Code in the Dark, проект в котором 10 участников верстают один макет не видя результат, используйте кнопки ниже для записи!';
+bot.on('message', (ctx) => ctx.telegram.sendMessage(ctx.from.id, msg, inlineMessageRatingKeyboard));
+bot.action('user', (ctx) => {
+  if (users <= 10) {
+    if (ctx.from.username) {
+      ctx.editMessageText('🎉 Поздравляю, ожидайте начала, вам придёт ссылка! 🎉');
+      fs.writeFile('users/' + ctx.from.username + '.html', users, function (err) {
+        if (err) { return console.log(err); }
+      });
+      users++;
+    } else {
+      ctx.editMessageText('⛔️ Стоп, для участия вам нужно иметь в телеграмме USERNAME, настройте это пожалуйста в профиле!');
+    }
+  } else {
+    ctx.editMessageText('🤷 Простите, все места участников заняты, но вы можете стать зрителем!');
+  }
+});
+bot.action('looker', (ctx) => ctx.editMessageText('🎉 Поздравляю, ожидайте начала, вам придёт ссылка! 🎉'));
+bot.launch();
 
 app.all('*', function(req, res, next) {
 	var ip = (req.headers['x-forwarded-for'] || '').split(',')[0] || req.connection.remoteAddress;
@@ -50,7 +80,7 @@ app.get('/:name', function(req, res){
   console.log(req.params.name);
   res.render('home', { name: name1 });
   fs.readFile('users/' + name1 + '.html', 'utf8', (err, data) => {
-    if(err) {res.json('Вы не приглашенны...');}
+    if(err) {res.json('Такого участника не существует, видимо вы не приглашены...');}
     else {
       io.on('connection', client => {
         io.sockets.emit('code' + name + 't', name);
@@ -98,7 +128,7 @@ app.get('/:name', function(req, res){
 app.get('/look/:name', function(req, res){
   name = req.params.name;
   fs.readFile('users/' + name + '.html', 'utf8', (err, data) => {
-    if(err) {res.json('no search file =(');}
+    if(err) {res.json('Участник не найден!');}
     else {
       res.render('frame', { code: data, name: name });
     }

@@ -1,18 +1,19 @@
 {
   "name": "codeinthedark",
-  "version": "24.11.2020",
+  "version": "14.05.2021",
   "description": "codeinthedark",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app"
   },
-  "author": "vsevolodhtml",
+  "author": "vsecoder",
   "license": "MIT",
   "dependencies": {
     "codemirror": "^5.58.3",
     "express": "^4.17.1",
     "socket.io": "^3.0.3",
-    "express-handlebars": "^5.2.0"
+    "express-handlebars": "^5.2.0",
+    "telegraf": "^4.3.0"
   }
 }
